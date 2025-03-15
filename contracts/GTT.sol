@@ -4,7 +4,7 @@ pragma solidity ^0.8.29;
 import "./IERC20.sol";
 
 // Interface for the ERC20 standard token
-contract ERC2O is IERC20 {
+contract GTT is IERC20 {
 
     // 总量
     uint256 public override totalSupply;
@@ -23,6 +23,10 @@ contract ERC2O is IERC20 {
     mapping(address => mapping(address => uint256)) public override allowance;
 
     constructor(string memory _name, string memory _symbol, uint256 _totalSupply) {
+        require(bytes(_name).length > 0, "ERROR: name is empty");
+        require(bytes(_symbol).length > 0, "ERROR: symbol is empty");
+        require(_totalSupply > 0, "ERROR: total supply must be greater than zero");
+
         name = _name;
         symbol = _symbol;
         totalSupply = _totalSupply;
