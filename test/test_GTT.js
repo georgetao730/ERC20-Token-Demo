@@ -5,7 +5,14 @@ contract("GTT", accounts => {
 
     it("should deploy the GTT contract", async () => {
         const instance = await GTT.deployed();
-        assert(instance.address !== "");
+        assert(instance.address !== "", "Contract address should not be empty");
+    
+        // Additional assertions
+        const ownerAddress = await instance.owner();
+        assert(ownerAddress === owner, "Owner address should match the deployer address");
+    
+        const totalSupply = await instance.totalSupply();
+        assert(totalSupply.toNumber() === 1000000, "Initial total supply should be 1,000,000 tokens");
     });
 
     it("should have the correct total supply", async () => {

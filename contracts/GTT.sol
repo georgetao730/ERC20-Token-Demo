@@ -23,16 +23,12 @@ contract GTT is IERC20 {
     mapping(address => mapping(address => uint256)) public override allowance;
 
     constructor(string memory _name, string memory _symbol, uint256 _totalSupply) {
-        require(bytes(_name).length > 0, "ERROR: name is empty");
-        require(bytes(_symbol).length > 0, "ERROR: symbol is empty");
-        require(_totalSupply > 0, "ERROR: total supply must be greater than zero");
-
         name = _name;
         symbol = _symbol;
         totalSupply = _totalSupply;
+        owner = msg.sender;
         balanceOf[msg.sender] = _totalSupply;
-        owner = msg.sender; // 初始化owner为合约的部署者
-    }  
+    }
 
     // transfer函数允许代币持有者将一定数量的代币转移给另一个地址。
     // 它检查发送者的余额是否足够，然后更新余额并发出Transfer事件。
