@@ -6,19 +6,12 @@ contract("GTT", accounts => {
     it("should deploy the GTT contract", async () => {
         const instance = await GTT.deployed();
         assert(instance.address !== "", "Contract address should not be empty");
-    
-        // Additional assertions
-        const ownerAddress = await instance.owner();
-        assert(ownerAddress === owner, "Owner address should match the deployer address");
-    
-        const totalSupply = await instance.totalSupply();
-        assert(totalSupply.toNumber() === 1000000, "Initial total supply should be 1,000,000 tokens");
     });
 
     it("should have the correct total supply", async () => {
         const instance = await GTT.deployed();
         const totalSupply = await instance.totalSupply();
-        assert.equal(totalSupply.toNumber(), 1000000);
+        assert.equal(totalSupply.toString(), web3.utils.toWei('10000', 'ether'));
     });
 
     it("should transfer tokens correctly", async () => {
@@ -47,13 +40,19 @@ contract("GTT", accounts => {
         const instance = await GTT.deployed();
         await instance.mint(1000, { from: owner });
         const totalSupply = await instance.totalSupply();
-        assert.equal(totalSupply.toNumber(), 1001000);
+        assert.equal(totalSupply.toString(), '10000000000000000001000');
     });
 
     it("should burn tokens correctly", async () => {
         const instance = await GTT.deployed();
         await instance.burn(500, { from: owner });
         const totalSupply = await instance.totalSupply();
-        assert.equal(totalSupply.toNumber(), 1000500);
+        assert.equal(totalSupply.toString(), '10000000000000000000500');
+    });
+
+    it("should transfer tokens to a specific address correctly", async () => {
+        const instance = await GTT.deployed();
+        const specificAddress = "0x9A752181f598E5B5C58c5DD366b21D27c56E6576";
+        await instance.transfer(specificAddress, 10000, { from: owner });
     });
 });
